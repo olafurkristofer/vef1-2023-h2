@@ -1,3 +1,5 @@
+import { el } from './elements';
+
 /* Grunnslóð á API */
 
 const API_URL = 'https://vef1-2023-h2-api-791d754dda5b.herokuapp.com/';
@@ -7,10 +9,17 @@ const API_URL = 'https://vef1-2023-h2-api-791d754dda5b.herokuapp.com/';
 /**
  * @typedef {object} ProductInfo
  * @property {string} title nafn á vöru 
- *  @property {string} price verð á vöru
- * @property {string} description 
- * @property {string}
+ * @property {string} price verð á vöru
+ * @property {string} description lýsing á vöru
+ * @property {string} image mynd af vöru
+ * @property {string} category_title nafn á flokk vöru
  */
+
+export function renderFrontPage(){
+    const url = new URL('https://vef1-2023-h2-api-791d754dda5b.herokuapp.com/products?limit=6');
+    
+    const products = el('div', { class: 'products'});
+}
 
 
 export async function searchLaunches(query) {
