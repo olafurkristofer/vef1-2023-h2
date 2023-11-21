@@ -1,0 +1,67 @@
+/*Endurstilla allt */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+/* Grunnstillingar */
+
+:root {
+  /* Grunn bilið okkar er 1rem == 16px */
+  --font-base-body-px: 16px;
+  --spacing: 1rem;
+
+  /* Letur stillingar */
+  --font-base-size: 1rem;
+  --font-family-base: 'Noto Sans Display', Helvetica, Arial, sans-serif;
+  --font-family-heading: 'Lora', Georgia, serif;
+
+  /* Litir */
+  --dark-blue: #27374d;
+  --blue: #526d82;
+  --light-blue: #9db2bf;
+  --lightest: #dde6ed;
+
+  /* Hámarksbreidd á efni */
+  --max-width: 1400px;
+  --width-offset: calc(100% - (2 * var(--offset)));
+
+  /* Grid stillingar */
+  --columns: 12;
+  --gutter: 30px;
+  --offset: 20px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  background-color: #526d82;
+}
+
+.header h1 {
+  color: white;
+  padding: 1rem;
+}
+
+.header .nav{
+    padding: var(--spacing)
+}
+
+.header .nav a{
+  padding: var(--spacing);
+  color: white;
+  text-decoration: none;
+}
+
