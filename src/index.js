@@ -5,6 +5,33 @@
  * @property {string} price Verð á vöru.
  */
 
+/* Fall til að búa til HTML element */
+function el(name, attributes = {}, ...children) {
+    const e = document.createElement(name);
+  
+    for (const key of Object.keys(attributes)) {
+      e.setAttribute(key, attributes[key]);
+    }
+  
+    for (const child of children) {
+      if (!child) {
+        console.warn('Child is null', name, attributes);
+        // eslint-disable-next-line no-continue
+        continue;
+      }
+  
+      if (typeof child === 'string' || typeof child === 'number') {
+        e.appendChild(document.createTextNode(child.toString()));
+      } else {
+        e.appendChild(child);
+      }
+    }
+  
+    return e;
+  }
+
+
+
 async function renderFrontPage(parentElement) {
   const response = await fetch(
     'https://vef1-2023-h2-api-791d754dda5b.herokuapp.com/products?limit=6'
@@ -64,27 +91,4 @@ function empty(element) {
   }
 }
 
-/* Fall til að búa til HTML element */
-function el(name, attributes = {}, ...children) {
-  const e = document.createElement(name);
 
-  for (const key of Object.keys(attributes)) {
-    e.setAttribute(key, attributes[key]);
-  }
-
-  for (const child of children) {
-    if (!child) {
-      console.warn('Child is null', name, attributes);
-      // eslint-disable-next-line no-continue
-      continue;
-    }
-
-    if (typeof child === 'string' || typeof child === 'number') {
-      e.appendChild(document.createTextNode(child.toString()));
-    } else {
-      e.appendChild(child);
-    }
-  }
-
-  return e;
-}

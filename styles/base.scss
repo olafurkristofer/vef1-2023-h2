@@ -48,6 +48,7 @@
     flex-wrap: wrap;
     align-items: center;
     background-color: #526d82;
+    margin-bottom: 1rem;
   }
   
   .header h1 {
@@ -65,4 +66,23 @@
     text-decoration: none;
   }
   
+
+
+  input[type="text"] {
+    padding: 4px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-color: solid black;
+    margin-bottom: 1rem;
+    
+  }
   
+  input[type="submit"] {
+    padding: 8px 16px ;
+    font-size: 8px;
+    background-color: black;
+    color: white;
+    border: none;
+    
+    cursor: pointer;
+}
