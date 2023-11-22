@@ -5,37 +5,53 @@
  * @property {string} price Verð á vöru.
  */
 
-  async function renderFrontPage(){
-    const response = await fetch('https://vef1-2023-h2-api-791d754dda5b.herokuapp.com/products?limit=6').then(response => response.json()).then(data => data.items);
-
-    for (let index = 0; index < response.length; index++) {
-      console.log(response[index].id)
-      
-    }
-
+async function renderFrontPage(parentElement) {
+  const response = await fetch(
+    'https://vef1-2023-h2-api-791d754dda5b.herokuapp.com/products?limit=6'
+  )
+    .then((response) => response.json())
+    .then((data) => data.items);
+  const container = parentElement.querySelector('.products');
+  if (container === null) {
+    return;
   }
 
-  renderFrontPage()
+  console.log(container);
 
+  for (let index = 0; index < response.length; index++) {
+    const productBox = el('div', { class: 'productBox' });
+    const productName = el(
+      'h2',
+      { class: 'productTitle' },
+      response[index].title
+    );
+    const productPrice = el(
+      'p',
+      { class: 'productPrice' },
+      response[index].price
+    );
+    const productImage = el('img', {
+      class: 'productImage',
+      src: `${response[index].image}`,
+    });
+    const productCat = el(
+      'p',
+      { class: 'productCat' },
+      response[index].category_title
+    );
 
+    productBox.appendChild(productName);
+    productBox.appendChild(productPrice);
+    productBox.appendChild(productImage);
+    productBox.appendChild(productCat);
 
+    container.appendChild(productBox);
+  }
 
+  return container;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+renderFrontPage(document.body);
 
 /* Fall til að tæma allt af síðunni */
 function empty(element) {
