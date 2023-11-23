@@ -10,6 +10,8 @@ function route() {
   }
 }
 
+
+
 route();
 
 // Bregst við því þegar við notum vafra til að fara til baka eða áfram.
