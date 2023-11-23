@@ -16,8 +16,6 @@ html {
 
 img {
   max-width: 100%;
-  object-fit: cover;
-  object-position: top center;
 }
 
 a {
@@ -98,18 +96,22 @@ input[type=submit] {
   margin-bottom: 1rem;
 }
 .products .productBox img {
-  max-width: 400px;
-  max-height: 265px;
   margin-bottom: 1rem;
 }
-@media (min-width: 500px) {
+@media (min-width: 700px) {
   .products .productBox {
     grid-column: span 6;
+  }
+  .products .productBox img {
+    max-height: 200px;
   }
 }
 @media (min-width: 1000px) {
   .products .productBox {
     grid-column: span 4;
+  }
+  .products .productBox img {
+    max-height: 350px;
   }
 }
 
