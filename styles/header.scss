@@ -1,0 +1,23 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  background-color: #526d82;
+  margin-bottom: 1rem;
+
+  h1 {
+    color: white;
+    padding: 1rem;
+  }
+
+  .nav {
+    padding: 1rem; 
+  }
+
+  a {
+    padding: 1rem;
+    color: white;
+    text-decoration: none;
+  }
+}

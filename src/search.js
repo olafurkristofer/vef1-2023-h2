@@ -1,12 +1,18 @@
-
-function handleSearch() {
+export function handleSearch() {
     const searchForm = document.getElementById('searchForm');
 
     if (searchForm) {
         searchForm.addEventListener('submit', async function (event) {
             event.preventDefault();
             const searchInput = document.getElementById('searchInput');
+
+            if (searchInput === null) {
+                return;
+            }
+
             const searchTerm = searchInput.value;
+
+            console.log(searchTerm)
 
             const response = await fetch(
                 `https://vef1-2023-h2-api-791d754dda5b.herokuapp.com/products?limit=6&q=${encodeURIComponent(searchTerm)}`
@@ -16,6 +22,10 @@ function handleSearch() {
 
             const container = document.querySelector('.products');
             empty(container);
+
+            if (container === null) {
+                return;
+            }
 
             for (let index = 0; index < response.length; index++) {
                 const productBox = el('div', { class: 'productBox' });
@@ -50,7 +60,7 @@ function handleSearch() {
     }
 }
 
-function empty(element) {
+export function empty(element) {
     if (!element || !element.firstChild) {
         return;
     }
@@ -60,7 +70,7 @@ function empty(element) {
     }
 }
 
-function el(name, attributes = {}, ...children) {
+export function el(name, attributes = {}, ...children) {
     const e = document.createElement(name);
 
     for (const key of Object.keys(attributes)) {

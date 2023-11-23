@@ -1,3 +1,5 @@
+import { el,empty,handleSearch } from './search.js';
+
 function route() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
@@ -40,7 +42,7 @@ async function renderFrontPage(parentElement) {
       response[index].title
     );
     const productPrice = el(
-      'p',
+      'h2',
       { class: 'productPrice' },
       response[index].price,
       ' ',
@@ -53,11 +55,15 @@ async function renderFrontPage(parentElement) {
     const productCat = el(
       'p',
       { class: 'productCat' },
-      response[index].category_title
+      'Category: ' , response[index].category_title
     );
 
-    productBox.appendChild(productName);
-    productBox.appendChild(productPrice);
+    const titlePriceDiv = el('div', { class: 'priceAndTitle' });
+
+    titlePriceDiv.appendChild(productName);
+    titlePriceDiv.appendChild(productPrice);
+
+    productBox.appendChild(titlePriceDiv);
     productBox.appendChild(productImage);
     productBox.appendChild(productCat);
 
@@ -65,7 +71,7 @@ async function renderFrontPage(parentElement) {
   }
 
   const productlist = el('a', { class: 'productsLink', href:'javascript:void(0);'}, 'Skoða vörulista')
-  productlist.addEventListener('click', renderProducts(document.body));
+  productlist.addEventListener('click', renderProducts(parentElement));
   
   container.appendChild(productlist);
 
@@ -139,14 +145,4 @@ async function renderDetails(parentElement, id) {}
 
 function getProductID() {}
 
-/* Fall til að tæma allt af síðunni */
-function empty(element) {
-  if (!element || !element.firstChild) {
-    return;
-  }
-
-  while (element.firstChild) {
-    element.removeChild(element.firstChild);
-  }
-}
 

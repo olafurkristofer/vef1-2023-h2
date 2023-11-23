@@ -6,7 +6,7 @@
     "scripts": {
         "browser-sync": "browser-sync start --server --files index.html styles.css ./src/",
         "sass": "sass styles.scss styles.css",
-        "sass-watch": "sass --watch *.scss styles.css",
+        "sass-watch": "sass --watch styles.scss styles.cssn",
         "dev": "concurrently npm:sass-watch npm:browser-sync",
         "prettier": "prettier --write ."
     },
