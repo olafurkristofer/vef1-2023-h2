@@ -12,7 +12,8 @@ function route() {
     renderDetails(document.body, id);
   } else if (products) {
     renderProducts(document.body);
-  } else {
+  }
+  else {
     renderFrontPage(document.body);
   }
 }
@@ -220,8 +221,88 @@ async function renderDetails(parentElement, id) {
 
   mainEl.appendChild(container);
 
-  return mainEl;
-}
+    
+    const relatedProducts = await getRelatedProducts(result.category_id, id);
+
+    if (relatedProducts && relatedProducts.length > 0) {
+      const relatedProductsContainer = el('div', { class: 'relatedProducts' });
+      const relatedProductsHeading = el('h2', {}, 'Vörur úr sama flokki');
+  
+      relatedProductsContainer.appendChild(relatedProductsHeading);
+  
+      for (let i = 0; i < Math.min(3, relatedProducts.length); i++) {
+        const relatedProductBox = el('div', { class: 'productBox' });
+        const relatedProductName = el(
+          'a',
+          { class: 'productTitle', href: `/?id=${relatedProducts[i].id}` },
+          relatedProducts[i].title
+        );
+        const relatedProductPrice = el(
+          'h2',
+          { class: 'productPrice' },
+          relatedProducts[i].price,
+          ' ',
+          'Kr.-'
+        );
+        const relatedProductImage = el('img', {
+          class: 'productImage',
+          src: `${relatedProducts[i].image}`,
+        });
+        const relatedProductCat = el(
+          'p',
+          { class: 'productCat' },
+          'Flokkur: ',
+          relatedProducts[i].category_title
+        );
+  
+        relatedProductBox.appendChild(relatedProductName);
+        relatedProductBox.appendChild(relatedProductPrice);
+        relatedProductBox.appendChild(relatedProductImage);
+        relatedProductBox.appendChild(relatedProductCat);
+  
+        relatedProductsContainer.appendChild(relatedProductBox);
+      }
+  
+      mainEl.appendChild(relatedProductsContainer);
+    }
+  
+    return mainEl;
+  }
+  
+  async function getRelatedProducts(categoryId, currentProductId) {
+    const url = new URL(`/products?category_id=${categoryId}&limit=3&id_ne=${currentProductId}`, baseUrl);
+
+  
+    let response;
+  
+    try {
+      response = await fetch(url);
+    } catch (e) {
+      console.error('Villa við að sækja gögn fyrir tengdar vörur', categoryId);
+      return [];
+    }
+  
+    if (!response.ok) {
+      console.error('Fékk ekki 200 status frá API');
+      return [];
+    }
+  
+    let data;
+  
+    try {
+      data = await response.json();
+    } catch (e) {
+      console.error('Villa við að lesa gögn um tengdar vörur', categoryId);
+      return [];
+    }
+  
+    
+    const relatedProducts = data.items.filter((product) => product.id !== currentProductId);
+  
+    return relatedProducts;
+  }
+  
+
 
 /* Fall til að sækja json data um sérstaka vöru */
 async function getProductId(id) {

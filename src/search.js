@@ -16,6 +16,8 @@ export async function handleSearch() {
                 return;
             }
 
+            updateURL(searchTerm);
+
             console.log(searchTerm);
 
             try {
@@ -123,6 +125,14 @@ export function el(name, attributes = {}, ...children) {
 
     return e;
     
+}
+
+function updateURL(searchTerm) {
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    params.set('search', searchTerm);
+    url.search = params.toString();
+    window.history.pushState({ path: url.href }, '', url.href);
 }
 
 document.addEventListener('DOMContentLoaded', handleSearch);
