@@ -159,4 +159,19 @@ footer a {
   font-weight: bold;
 }
 
+input[type=text] {
+  padding: 6px 68px;
+  margin-bottom: 1rem;
+}
+
+input[type=submit] {
+  padding: 6px 12px;
+  color: white;
+  background-color: black;
+}
+
+input[type=submit]:hover {
+  background-color: #585e66;
+}
+
 /*# sourceMappingURL=styles.css.map */

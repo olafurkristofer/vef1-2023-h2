@@ -2,7 +2,7 @@
 
 "Ólafur Kristófer Helgason - Jón Aðalsteinn Ólafsson"
 
-"HÍ: okh4@hi.is - ..."
+"HÍ: okh4@hi.is - jao19@hi.is"
 
 "Github: olafurkristofer - JAO300"
 
