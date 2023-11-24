@@ -16,11 +16,30 @@ html {
 
 img {
   max-width: 100%;
+  object-fit: cover;
+  object-position: top center;
 }
 
 a {
   color: inherit;
   background-color: inherit;
+}
+
+input[type=text] {
+  padding: 4px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-color: solid black;
+  margin-bottom: 1rem;
+}
+
+input[type=submit] {
+  padding: 8px 16px;
+  font-size: 8px;
+  background-color: black;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 
 .header {
@@ -79,23 +98,19 @@ a {
   margin-bottom: 1rem;
 }
 .products .productBox img {
+  max-width: 400px;
+  max-height: 265px;
   margin-bottom: 1rem;
 }
-@media (min-width: 700px) {
+@media (min-width: 500px) {
   .products .productBox {
     grid-column: span 6;
-  }
-  .products .productBox img {
-    max-height: 200px;
   }
 }
 @media (min-width: 1000px) {
   .products .productBox {
     grid-column: span 4;
   }
-  .products .productBox img {
-    max-height: 350px;
-  }
 }
 
-/*# sourceMappingURL=styles.css.map */
+/*# sourceMappingURL=styles.cssn.map */
