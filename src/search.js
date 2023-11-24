@@ -19,6 +19,10 @@ export async function handleSearch(parentElement, search) {
     return;
   }
 
+  if (response.length === 0) {
+    container.appendChild(el('h2', { class: 'FannIkke' }, 'Fann ekki vörur'));
+  }
+
   for (const data of response){
     const productBox = el('div', { class: 'productBox' });
     const productName = el(
