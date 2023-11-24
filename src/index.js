@@ -1,5 +1,8 @@
 import { el,empty,handleSearch } from './search.js';
 
+/* Grunn URL fyrir API */
+const baseUrl = 'https://vef1-2023-h2-api-791d754dda5b.herokuapp.com/';
+
 function route() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
@@ -12,8 +15,6 @@ function route() {
   }
 }
 
-
-
 route();
 
 // Bregst við því þegar við notum vafra til að fara til baka eða áfram.
@@ -24,11 +25,13 @@ window.onpopstate = () => {
 
 /* Fall til að sýna forsíðu */
 async function renderFrontPage(parentElement) {
+  setLoading(parentElement);
   const response = await fetch(
     'https://vef1-2023-h2-api-791d754dda5b.herokuapp.com/products?limit=6'
   )
     .then((response) => response.json())
     .then((data) => data.items);
+  setNotLoading(parentElement);
   const container = parentElement.querySelector('.products');
   if (container === null) {
     return;
@@ -37,8 +40,8 @@ async function renderFrontPage(parentElement) {
   for (let index = 0; index < response.length; index++) {
     const productBox = el('div', { class: 'productBox' });
     const productName = el(
-      'h2',
-      { class: 'productTitle' },
+      'a',
+      { class: 'productTitle', href: `/?id=${response[index].id}` },
       response[index].title
     );
     const productPrice = el(
@@ -58,6 +61,8 @@ async function renderFrontPage(parentElement) {
       'Category: ' , response[index].category_title
     );
 
+    
+
     const titlePriceDiv = el('div', { class: 'priceAndTitle' });
 
     titlePriceDiv.appendChild(productName);
@@ -70,11 +75,6 @@ async function renderFrontPage(parentElement) {
     container.appendChild(productBox);
   }
 
-  const productlist = el('a', { class: 'productsLink', href:'javascript:void(0);'}, 'Skoða vörulista')
-  productlist.addEventListener('click', renderProducts(parentElement));
-  
-  container.appendChild(productlist);
-
   return container;
 }
 
@@ -84,18 +84,20 @@ async function renderFrontPage(parentElement) {
 async function renderProducts(parentElement) {
   const container = parentElement.querySelector('products');
   empty(container);
+  if (container === null) {
+    return;
+  }
   const heading = el('h1', { class: 'productList' }, 'Vörulisti');
   container.appendChild(heading);
 
+  setLoading(parentElement);
   const response = await fetch(
     'https://vef1-2023-h2-api-791d754dda5b.herokuapp.com/products'
   )
     .then((response) => response.json())
     .then((data) => data.items);
 
-  if (container === null) {
-    return;
-  }
+  setNotLoading();
 
   for (let index = 0; index < response.length; index++) {
     const productBox = el('div', { class: 'productBox' });
@@ -140,9 +142,25 @@ async function renderProducts(parentElement) {
   return container;
 }
 
-/* Fall til að sýna upplýsinga um sérstaka vöru */
-async function renderDetails(parentElement, id) {}
+/* Loading föll, bæði til að setja loading state á síðu og taka það burt */
+function setLoading(parentElement){
+  let loadingElement = parentElement.querySelector('.loading');
 
-function getProductID() {}
+  if (!loadingElement) {
+    loadingElement = el('div', { class: 'loading' }, 'Sæki gögn...');
+    parentElement.appendChild(loadingElement);
+  }
+}
+
+function setNotLoading(parentElement){
+  const loadingElement = parentElement.querySelector('.loading');
+
+  if (loadingElement) {
+    loadingElement.remove();
+  }
+}
+
+async function renderDetails(parentElement, id){
 
 
+}
