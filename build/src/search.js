@@ -9,13 +9,27 @@ export async function handleSearch(parentElement, search) {
   }
 
   let response;
+            const searchTerm = searchInput.value.trim();
+
+            if (!searchTerm) {
+                return;
+            }
+
+            updateURL(searchTerm);
+
+            console.log(searchTerm);
 
   try {
     setLoading(parentElement);
-    response = await fetch(`https://vef1-2023-h2-api-791d754dda5b.herokuapp.com/products?search=${search}`).then(response => response.json()).then(data => data.items);
-    setNotLoading(parentElement)
+    response = await fetch(
+      `https://vef1-2023-h2-api-791d754dda5b.herokuapp.com/products?search=${search}`
+    )
+      .then((response) => response.json())
+      .then((data) => data.items);
+      
+    setNotLoading(parentElement);
   } catch (e) {
-    console.error('Villa');
+    console.error('Villa við að sækja gögn um flokk', search);
     return;
   }
 
@@ -92,4 +106,20 @@ export function el(name, attributes = {}, ...children) {
   }
 
   return e;
+}
+
+function updateURL(searchTerm) {
+  const url = new URL(window.location.href);
+  const params = new URLSearchParams(url.search);
+  params.set('search', searchTerm);
+  url.search = params.toString();
+  window.history.pushState({ path: url.href }, '', url.href);
+}
+
+function updateURL(searchTerm) {
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    params.set('search', searchTerm);
+    url.search = params.toString();
+    window.history.pushState({ path: url.href }, '', url.href);
 }
