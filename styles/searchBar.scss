@@ -1,15 +1,14 @@
-#searchInput {
-  padding: 6px 40px;
-  margin-bottom: 1rem;
-}
+input[type=text] {
+    padding: 6px 68px;
+    margin-bottom: 1rem;
+  }
 
-#submitForm {
-  padding: 6px 12px;
-  color: white;
-  background-color: black;
-
-  &:hover {
+  input[type=submit] {
+   padding: 6px 12px;
+   color: white;
+background-color: black;
+  }
+  
+  input[type=submit]:hover {
     background-color: #585e66;
   }
-}
-

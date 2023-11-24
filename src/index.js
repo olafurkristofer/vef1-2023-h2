@@ -20,6 +20,17 @@ function route() {
   } else {
     renderFrontPage(document.body);
   }
+
+  const goBackLink = document.body.querySelector('.goBack');
+
+  if (!goBackLink) {
+    return;
+  } else {
+    goBackLink.addEventListener('click', function (event) {
+      event.preventDefault();
+      window.history.go(-1);
+    });
+  }
 }
 
 route();
@@ -177,7 +188,7 @@ async function renderDetails(parentElement, id) {
   product.remove();
   empty(parentElement.querySelector('products'));
   const container = el('div', { class: 'productIdDiv' });
-  const backElement = el('a', { href: '/', class: 'goBack' }, 'Til baka');
+  const backElement = el('a', { href: '', class: 'goBack' }, 'Til baka');
 
   const mainEl = parentElement.querySelector('main');
 
