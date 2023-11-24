@@ -25,6 +25,14 @@ $maxWidth: 1400px;
 
   width: 100%;
 
+  .productListLink {
+    text-decoration: none;
+    padding: 10px 20px;
+    border: 1px solid #333;
+    color: #333;
+    font-weight: bold;
+  }
+
   .productBox {
     grid-column: span 12;
     display: flex;
@@ -38,18 +46,18 @@ $maxWidth: 1400px;
     border: 1px solid;
     border-radius: 4px;
 
-    .productTitle{
+    .productTitle {
       font-size: 1.5em;
       font-weight: bold;
       text-decoration: none;
 
-      &:hover{
+      &:hover {
         color: darkblue;
         text-decoration: underline;
       }
     }
 
-    .productCat{
+    .productCat {
       font-size: 1em;
       font-weight: bold;
     }
@@ -78,4 +86,13 @@ $maxWidth: 1400px;
       }
     }
   }
+}
+
+.frontPageLink {
+  text-decoration: none;
+  padding: 10px 20px;
+  border: 1px solid #333;
+  color: #333;
+  font-weight: bold;
+  width: fit-content;
 }

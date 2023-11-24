@@ -7,14 +7,29 @@ function route() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
   const products = params.has('products');
+  const search = params.get('search');
 
   if (id) {
     renderDetails(document.body, id);
   } else if (products) {
     renderProducts(document.body);
-  }
-  else {
+  } else if (search){
+    const value = document.body.querySelector('.searchForm');
+    value?.setAttribute('value', search)
+    handleSearch(document.body, search);
+  } else {
     renderFrontPage(document.body);
+  }
+
+  const goBackLink = document.body.querySelector('.goBack');
+
+  if (!goBackLink) {
+    return;
+  } else {
+    goBackLink.addEventListener('click', function (event) {
+      event.preventDefault();
+      window.history.go(-1);
+    });
   }
 }
 
@@ -124,7 +139,8 @@ async function renderProducts(parentElement) {
     });
     const productCat = el(
       'p',
-      { class: 'productCat' }, 'Flokkur: ',
+      { class: 'productCat' },
+      'Flokkur: ',
       response[index].category_title
     );
 
@@ -137,9 +153,9 @@ async function renderProducts(parentElement) {
   }
 
   const backElement = el(
-    'div',
-    { class: 'back' },
-    el('a', { href: '/' }, 'Fara á forsíðu')
+    'a',
+    { class: 'frontPageLink', href: '/' },
+    'Fara á forsíðu'
   );
 
   parentElement.querySelector('main').appendChild(backElement);
@@ -148,7 +164,7 @@ async function renderProducts(parentElement) {
 }
 
 /* Loading föll, bæði til að setja loading state á síðu og taka það burt */
-function setLoading(parentElement) {
+export function setLoading(parentElement) {
   let loadingElement = parentElement.querySelector('.loading');
 
   if (!loadingElement) {
@@ -157,7 +173,7 @@ function setLoading(parentElement) {
   }
 }
 
-function setNotLoading(parentElement) {
+export function setNotLoading(parentElement) {
   const loadingElement = parentElement.querySelector('.loading');
 
   if (loadingElement) {
@@ -167,18 +183,12 @@ function setNotLoading(parentElement) {
 
 /* Fall til að sýna bara eina vöru */
 async function renderDetails(parentElement, id) {
+  const product = parentElement.querySelector('.products');
 
-  const product = parentElement.querySelector('.products')
-
-  product.remove()
-
+  product.remove();
   empty(parentElement.querySelector('products'));
   const container = el('div', { class: 'productIdDiv' });
-  const backElement = el(
-    'div',
-    { class: 'back' },
-    el('a', { href: '/' }, 'Til baka')
-  );
+  const backElement = el('a', { href: '', class: 'goBack' }, 'Til baka');
 
   const mainEl = parentElement.querySelector('main');
 
@@ -207,7 +217,8 @@ async function renderDetails(parentElement, id) {
   });
   const productIdCat = el(
     'p',
-    { class: 'productIdCat' }, 'Flokkur: ',
+    { class: 'productIdCat' },
+    'Flokkur: ',
     result.category_title
   );
 
