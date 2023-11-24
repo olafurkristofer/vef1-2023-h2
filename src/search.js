@@ -1,135 +1,108 @@
-export async function handleSearch() {
-    const searchForm = document.getElementById('searchForm');
+import { setLoading, setNotLoading } from './index.js';
 
-    if (searchForm) {
-        searchForm.addEventListener('submit', async function (event) {
-            event.preventDefault();
-            const searchInput = document.getElementById('searchInput');
+export async function handleSearch(parentElement, search) {
+  const container = parentElement.querySelector('.products');
+  empty(container);
 
-            if (searchInput === null) {
-                return;
-            }
+  if (container === null) {
+    return;
+  }
 
-            const searchTerm = searchInput.value.trim();
+  let response;
 
-            if (!searchTerm) {
-                return;
-            }
+  try {
+    setLoading(parentElement);
+    response = await fetch(
+      `https://vef1-2023-h2-api-791d754dda5b.herokuapp.com/products?search=${search}`
+    )
+      .then((response) => response.json())
+      .then((data) => data.items);
+      
+    setNotLoading(parentElement);
+  } catch (e) {
+    console.error('Villa við að sækja gögn um flokk', search);
+    return;
+  }
 
-            console.log(searchTerm);
+  for (const data of response){
+    const productBox = el('div', { class: 'productBox' });
+    const productName = el(
+      'a',
+      { class: 'productTitle', href: `/?id=${data.id}` },
+      data.title
+    );
+    const productPrice = el(
+      'h2',
+      { class: 'productPrice' },
+      data.price,
+      ' ',
+      'Kr.-'
+    );
+    const productImage = el('img', {
+      class: 'productImage',
+      src: `${data.image}`,
+    });
+    const productCat = el(
+      'p',
+      { class: 'productCat' },
+      'Flokkur: ',
+      data.category_title
+    );
 
-            try {
-                const response = await fetch(
-                    `https://vef1-2023-h2-api-791d754dda5b.herokuapp.com/products`+'?search={'+searchTerm+'}'
-                )
+    productBox.appendChild(productName);
+    productBox.appendChild(productPrice);
+    productBox.appendChild(productImage);
+    productBox.appendChild(productCat);
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                const container = document.querySelector('.products');
-
-                
-                empty(container, 'productSearchInput');
-
-                if (data.items.length === 0) {
-                    const noResultsMessage = el('a', { class: 'noResultsMessage' }, 'Vara fannst ekki.');
-                    container.appendChild(noResultsMessage);
-                } else {
-                
-                
-                for (let index = 0; index < data.items.length; index++) {
-                    const productBox = el('div', { class: 'productBox' });
-                    const productName = el(
-                        'h2',
-                        { class: 'productTitle' },
-                        data.items[index].title
-                    );
-                    const productPrice = el(
-                        'h2',
-                        { class: 'productPrice' },
-                        data.items[index].price,
-                        ' ',
-                        'Kr.-'
-                    );
-                    const productImage = el('img', {
-                        class: 'productImage',
-                        src: `${data.items[index].image}`,
-                    });
-                    const productCat = el(
-                        'p',
-                        { class: 'productCat' },
-                        'Category: ', data.items[index].category_title
-                    );
-
-                    const titlePriceDiv = el('div', { class: 'priceAndTitle' });
-
-                    titlePriceDiv.appendChild(productName);
-                    titlePriceDiv.appendChild(productPrice);
-
-                    productBox.appendChild(titlePriceDiv);
-                    productBox.appendChild(productImage);
-                    productBox.appendChild(productCat);
-
-                    container.appendChild(productBox);
-                }
-            } 
-        }catch (error) {
-                console.error('Error fetching data:', error);
-            }
-
-        });
-    }
+    container.appendChild(productBox);
+  }
 }
-
-
-
 
 export function empty(element, excludeClass = '') {
-    if (!element || !element.firstChild) {
-        return;
-    }
+  if (!element || !element.firstChild) {
+    return;
+  }
 
-    while (element.firstChild) {
-        const child = element.firstChild;
-        if (excludeClass && child.classList && child.classList.contains(excludeClass)) {
-            continue;
-        }
-        element.removeChild(child);
+  while (element.firstChild) {
+    const child = element.firstChild;
+    if (
+      excludeClass &&
+      child.classList &&
+      child.classList.contains(excludeClass)
+    ) {
+      continue;
     }
+    element.removeChild(child);
+  }
 }
-
 
 export function el(name, attributes = {}, ...children) {
-    const e = document.createElement(name);
+  const e = document.createElement(name);
 
-    for (const key of Object.keys(attributes)) {
-        e.setAttribute(key, attributes[key]);
+  for (const key of Object.keys(attributes)) {
+    e.setAttribute(key, attributes[key]);
+  }
+
+  for (const child of children) {
+    if (!child) {
+      console.warn('Child is null', name, attributes);
+      continue;
     }
 
-    for (const child of children) {
-        if (!child) {
-            console.warn('Child is null', name, attributes);
-            continue;
-        }
-
-        if (typeof child === 'string' || typeof child === 'number') {
-            e.appendChild(document.createTextNode(child.toString()));
-        } else {
-            e.appendChild(child);
-        }
+    if (typeof child === 'string' || typeof child === 'number') {
+      e.appendChild(document.createTextNode(child.toString()));
+    } else {
+      e.appendChild(child);
     }
+  }
 
-    return e;
-    
+  return e;
 }
 
-document.addEventListener('DOMContentLoaded', handleSearch);
-
-
-
-
-
-
-
+function updateURL(searchTerm) {
+  const url = new URL(window.location.href);
+  const params = new URLSearchParams(url.search);
+  params.set('search', searchTerm);
+  url.search = params.toString();
+  window.history.pushState({ path: url.href }, '', url.href);
+}
