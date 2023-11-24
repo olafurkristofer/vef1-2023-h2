@@ -135,11 +135,7 @@ async function renderProducts(parentElement) {
     container.appendChild(productBox);
   }
 
-  const backElement = el(
-    'div',
-    { class: 'back' },
-    el('a', { href: '/' }, 'Fara á forsíðu')
-  );
+  const backElement = el('a', { class: 'frontPageLink', href: '/' }, 'Fara á forsíðu');
 
   parentElement.querySelector('main').appendChild(backElement);
 

@@ -80,6 +80,13 @@ input[type=submit] {
   gap: 30px;
   width: 100%;
 }
+.products .productListLink {
+  text-decoration: none;
+  padding: 10px 20px;
+  border: 1px solid #333;
+  color: #333;
+  font-weight: bold;
+}
 .products .productBox {
   grid-column: span 12;
   display: flex;
@@ -122,6 +129,15 @@ input[type=submit] {
   .products .productBox img {
     max-height: 350px;
   }
+}
+
+.frontPageLink {
+  text-decoration: none;
+  padding: 10px 20px;
+  border: 1px solid #333;
+  color: #333;
+  font-weight: bold;
+  width: fit-content;
 }
 
 footer {
