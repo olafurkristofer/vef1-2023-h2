@@ -174,22 +174,77 @@ footer a {
   font-weight: bold;
 }
 
-<<<<<<< HEAD
-input[type=text] {
-  padding: 6px 68px;
+.relatedProducts {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto;
+  justify-content: center;
+  gap: 30px;
+  width: 100%;
+}
+.relatedProducts .productListLink {
+  text-decoration: none;
+  padding: 10px 20px;
+  border: 1px solid #333;
+  color: #333;
+  font-weight: bold;
+}
+.relatedProducts .productBox {
+  grid-column: span 12;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  width: 100%;
+  min-height: 100px;
+  border: 1px solid;
+  border-radius: 4px;
+}
+.relatedProducts .productBox .productTitle {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-decoration: none;
+}
+.relatedProducts .productBox .productTitle:hover {
+  color: darkblue;
+  text-decoration: underline;
+}
+.relatedProducts .productBox .productCat {
+  font-size: 1em;
+  font-weight: bold;
+}
+.relatedProducts .productBox img {
+  margin-bottom: 1rem;
+}
+@media (min-width: 700px) {
+  .relatedProducts .productBox {
+    grid-column: span 6;
+  }
+  .relatedProducts .productBox img {
+    max-height: 200px;
+  }
+}
+@media (min-width: 1000px) {
+  .relatedProducts .productBox {
+    grid-column: span 4;
+  }
+  .relatedProducts .productBox img {
+    max-height: 350px;
+  }
+}
+
+#searchInput {
+  padding: 6px 40px;
   margin-bottom: 1rem;
 }
 
-input[type=submit] {
+#submitForm {
   padding: 6px 12px;
   color: white;
   background-color: black;
 }
-
-input[type=submit]:hover {
+#submitForm:hover {
   background-color: #585e66;
 }
 
-=======
->>>>>>> refs/remotes/origin/main
 /*# sourceMappingURL=styles.css.map */

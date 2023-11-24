@@ -8,7 +8,11 @@
     "sass": "sass styles.scss styles.css",
     "sass-watch": "sass --watch styles.scss styles.css",
     "dev": "concurrently npm:sass-watch npm:browser-sync",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "copy:html": "cpy ./*.html ./build/",
+    "copy:src": "cpy ./src/ ./build/",
+    "copy:css": "cpy styles.css ./build/",
+    "build": "concurrently npm:copy:*"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +24,8 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.29.0",
-    "prettier": "^3.0.3"
+    "prettier": "^3.0.3",
+    "cpy-cli": "^5.0.0"
   },
   "dependencies": {
     "sass": "^1.69.5"

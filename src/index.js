@@ -20,17 +20,6 @@ function route() {
   } else {
     renderFrontPage(document.body);
   }
-
-  const goBackLink = document.body.querySelector('.goBack');
-
-  if (!goBackLink) {
-    return;
-  } else {
-    goBackLink.addEventListener('click', function (event) {
-      event.preventDefault();
-      window.history.go(-1);
-    });
-  }
 }
 
 route();
@@ -188,7 +177,7 @@ async function renderDetails(parentElement, id) {
   product.remove();
   empty(parentElement.querySelector('products'));
   const container = el('div', { class: 'productIdDiv' });
-  const backElement = el('a', { href: '', class: 'goBack' }, 'Til baka');
+  const backElement = el('a', { href: '/', class: 'goBack' }, 'Til baka');
 
   const mainEl = parentElement.querySelector('main');
 
@@ -232,8 +221,89 @@ async function renderDetails(parentElement, id) {
 
   mainEl.appendChild(container);
 
-  return mainEl;
-}
+    console.log(result.category_id, id)
+    const relatedProducts = await getRelatedProducts(result.category_id);
+
+    if (relatedProducts && relatedProducts.length > 0) {
+      const relatedProductsContainer = el('div', { class: 'relatedProducts' });
+      const Heading = el('h2', {}, 'Vörur úr sama flokki');
+
+      mainEl.appendChild(Heading);
+  
+      for (let i = 0; i < relatedProducts.length; i++) {
+        const relatedProductBox = el('div', { class: 'productBox' });
+        const relatedProductName = el(
+          'a',
+          { class: 'productTitle', href: `/?id=${relatedProducts[i].id}` },
+          relatedProducts[i].title
+        );
+        const relatedProductPrice = el(
+          'h2',
+          { class: 'productPrice' },
+          relatedProducts[i].price,
+          ' ',
+          'Kr.-'
+        );
+        const relatedProductImage = el('img', {
+          class: 'productImage',
+          src: `${relatedProducts[i].image}`,
+        });
+        const relatedProductCat = el(
+          'p',
+          { class: 'productCat' },
+          'Flokkur: ',
+          relatedProducts[i].category_title
+        );
+  
+        relatedProductBox.appendChild(relatedProductName);
+        relatedProductBox.appendChild(relatedProductPrice);
+        relatedProductBox.appendChild(relatedProductImage);
+        relatedProductBox.appendChild(relatedProductCat);
+  
+        relatedProductsContainer.appendChild(relatedProductBox);
+      }
+  
+      mainEl.appendChild(relatedProductsContainer);
+    }
+  
+    return mainEl;
+  }
+  
+  async function getRelatedProducts(categoryId) {
+    const url = new URL(`/products?category_id=${categoryId}&limit=3`, baseUrl);
+
+  
+    let response;
+  
+    try {
+      response = await fetch(url);
+    } catch (e) {
+      console.error('Villa við að sækja gögn fyrir tengdar vörur', categoryId);
+      return [];
+    }
+  
+    if (!response.ok) {
+      console.error('Fékk ekki 200 status frá API');
+      return [];
+    }
+  
+    let data;
+  
+    try {
+      data = await response.json();
+    } catch (e) {
+      console.error('Villa við að lesa gögn um tengdar vörur', categoryId);
+      return [];
+    }
+  
+    
+    const relatedProducts = data.items.filter((product) => product.id);
+  
+    return relatedProducts;
+  }
+  
+
+
 
 /* Fall til að sækja json data um sérstaka vöru */
 async function getProductId(id) {
