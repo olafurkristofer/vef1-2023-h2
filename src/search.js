@@ -9,6 +9,15 @@ export async function handleSearch(parentElement, search) {
   }
 
   let response;
+            const searchTerm = searchInput.value.trim();
+
+            if (!searchTerm) {
+                return;
+            }
+
+            updateURL(searchTerm);
+
+            console.log(searchTerm);
 
   try {
     setLoading(parentElement);
@@ -105,4 +114,12 @@ function updateURL(searchTerm) {
   params.set('search', searchTerm);
   url.search = params.toString();
   window.history.pushState({ path: url.href }, '', url.href);
+}
+
+function updateURL(searchTerm) {
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    params.set('search', searchTerm);
+    url.search = params.toString();
+    window.history.pushState({ path: url.href }, '', url.href);
 }

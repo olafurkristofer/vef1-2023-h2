@@ -304,7 +304,6 @@ async function renderDetails(parentElement, id) {
   
 
 
-
 /* Fall til að sækja json data um sérstaka vöru */
 async function getProductId(id) {
   const url = new URL(`/products/${id}`, baseUrl);
