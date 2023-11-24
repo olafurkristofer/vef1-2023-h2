@@ -1,18 +1,21 @@
-import { el,empty,handleSearch } from './search.js';
+import { el, empty, handleSearch } from './search.js';
+
+/* Grunn URL fyrir API */
+const baseUrl = 'https://vef1-2023-h2-api-791d754dda5b.herokuapp.com/';
 
 function route() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
-  const query = params.get('search');
+  const products = params.has('products');
 
   if (id) {
     renderDetails(document.body, id);
+  } else if (products) {
+    renderProducts(document.body);
   } else {
     renderFrontPage(document.body);
   }
 }
-
-
 
 route();
 
@@ -24,11 +27,16 @@ window.onpopstate = () => {
 
 /* Fall til að sýna forsíðu */
 async function renderFrontPage(parentElement) {
+  const heading = el('h1', { class: 'NewProducts' }, 'Nýjar Vörur');
+  parentElement.querySelector('form').appendChild(heading);
+
+  setLoading(parentElement);
   const response = await fetch(
     'https://vef1-2023-h2-api-791d754dda5b.herokuapp.com/products?limit=6'
   )
     .then((response) => response.json())
     .then((data) => data.items);
+  setNotLoading(parentElement);
   const container = parentElement.querySelector('.products');
   if (container === null) {
     return;
@@ -37,8 +45,8 @@ async function renderFrontPage(parentElement) {
   for (let index = 0; index < response.length; index++) {
     const productBox = el('div', { class: 'productBox' });
     const productName = el(
-      'h2',
-      { class: 'productTitle' },
+      'a',
+      { class: 'productTitle', href: `/?id=${response[index].id}` },
       response[index].title
     );
     const productPrice = el(
@@ -55,57 +63,55 @@ async function renderFrontPage(parentElement) {
     const productCat = el(
       'p',
       { class: 'productCat' },
-      'Category: ' , response[index].category_title
+      'Flokkur: ',
+      response[index].category_title
     );
 
-    const titlePriceDiv = el('div', { class: 'priceAndTitle' });
-
-    titlePriceDiv.appendChild(productName);
-    titlePriceDiv.appendChild(productPrice);
-
-    productBox.appendChild(titlePriceDiv);
+    productBox.appendChild(productName);
+    productBox.appendChild(productPrice);
     productBox.appendChild(productImage);
     productBox.appendChild(productCat);
 
     container.appendChild(productBox);
   }
-
-  const productlist = el('a', { class: 'productsLink', href:'javascript:void(0);'}, 'Skoða vörulista')
-  productlist.addEventListener('click', renderProducts(parentElement));
-  
-  container.appendChild(productlist);
+  const productList = el(
+    'a',
+    { class: 'productListLink', href: `/?products` },
+    'Skoða Vörusíðu'
+  );
+  container.appendChild(productList);
 
   return container;
 }
 
-/* renderFrontPage(document.body); */
-
 /* Fall til að sýna allan vörulista */
 async function renderProducts(parentElement) {
-  const container = parentElement.querySelector('products');
+  const container = parentElement.querySelector('.products');
   empty(container);
+  if (container === null) {
+    return;
+  }
   const heading = el('h1', { class: 'productList' }, 'Vörulisti');
-  container.appendChild(heading);
+  parentElement.querySelector('form').appendChild(heading);
 
+  setLoading(container);
   const response = await fetch(
     'https://vef1-2023-h2-api-791d754dda5b.herokuapp.com/products'
   )
     .then((response) => response.json())
     .then((data) => data.items);
 
-  if (container === null) {
-    return;
-  }
+  setNotLoading(container);
 
   for (let index = 0; index < response.length; index++) {
     const productBox = el('div', { class: 'productBox' });
     const productName = el(
-      'h2',
-      { class: 'productTitle' },
+      'a',
+      { class: 'productTitle', href: `/?id=${response[index].id}` },
       response[index].title
     );
     const productPrice = el(
-      'p',
+      'h2',
       { class: 'productPrice' },
       response[index].price,
       ' ',
@@ -117,7 +123,7 @@ async function renderProducts(parentElement) {
     });
     const productCat = el(
       'p',
-      { class: 'productCat' },
+      { class: 'productCat' }, 'Flokkur: ',
       response[index].category_title
     );
 
@@ -135,14 +141,114 @@ async function renderProducts(parentElement) {
     el('a', { href: '/' }, 'Fara á forsíðu')
   );
 
-  container.appendChild(backElement);
+  parentElement.querySelector('main').appendChild(backElement);
 
   return container;
 }
 
-/* Fall til að sýna upplýsinga um sérstaka vöru */
-async function renderDetails(parentElement, id) {}
+/* Loading föll, bæði til að setja loading state á síðu og taka það burt */
+function setLoading(parentElement) {
+  let loadingElement = parentElement.querySelector('.loading');
 
-function getProductID() {}
+  if (!loadingElement) {
+    loadingElement = el('div', { class: 'loading' }, 'Sæki gögn...');
+    parentElement.appendChild(loadingElement);
+  }
+}
 
+function setNotLoading(parentElement) {
+  const loadingElement = parentElement.querySelector('.loading');
 
+  if (loadingElement) {
+    loadingElement.remove();
+  }
+}
+
+/* Fall til að sýna bara eina vöru */
+async function renderDetails(parentElement, id) {
+
+  const product = parentElement.querySelector('.products')
+
+  product.remove()
+
+  empty(parentElement.querySelector('products'));
+  const container = el('div', { class: 'productIdDiv' });
+  const backElement = el(
+    'div',
+    { class: 'back' },
+    el('a', { href: '/' }, 'Til baka')
+  );
+
+  const mainEl = parentElement.querySelector('main');
+
+  setLoading(container);
+  const result = await getProductId(id);
+  setNotLoading(container);
+
+  if (!result) {
+    container.appendChild(el('p', {}, 'Villa við að sækja gögn um vöru!'));
+    container.appendChild(backElement);
+    return;
+  }
+
+  const productIdName = el('h1', { class: 'productIdName' }, result.title);
+  const productIdPrice = el(
+    'p',
+    { class: 'productIdPrice' },
+    result.price,
+    ' ',
+    'Kr.-'
+  );
+  const productIdDesc = el('p', { class: 'productIdDesc' }, result.description);
+  const productIdImage = el('img', {
+    class: 'productIdImage',
+    src: `${result.image}`,
+  });
+  const productIdCat = el(
+    'p',
+    { class: 'productIdCat' }, 'Flokkur: ',
+    result.category_title
+  );
+
+  container.appendChild(productIdName);
+  container.appendChild(productIdPrice);
+  container.appendChild(productIdDesc);
+  container.appendChild(productIdImage);
+  container.appendChild(productIdCat);
+
+  container.appendChild(backElement);
+
+  mainEl.appendChild(container);
+
+  return mainEl;
+}
+
+/* Fall til að sækja json data um sérstaka vöru */
+async function getProductId(id) {
+  const url = new URL(`/products/${id}`, baseUrl);
+
+  let response;
+
+  try {
+    response = await fetch(url);
+  } catch (e) {
+    console.error('Villa við að sækja gögn fyrir vöru', id);
+    return;
+  }
+
+  if (!response.ok) {
+    console.error('Fékk ekki 200 status frá API');
+    return null;
+  }
+
+  let data;
+
+  try {
+    data = await response.json();
+  } catch (e) {
+    console.error('Villa við að lesa gögn um vöru', id);
+    return;
+  }
+
+  return data;
+}

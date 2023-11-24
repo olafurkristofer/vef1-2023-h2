@@ -1,28 +1,28 @@
 {
-    "name": "hopverkefni-2",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "browser-sync": "browser-sync start --server --files index.html styles.css ./src/",
-        "sass": "sass styles.scss styles.css",
-        "sass-watch": "sass --watch styles.scss styles.css",
-        "dev": "concurrently npm:sass-watch npm:browser-sync",
-        "prettier": "prettier --write ."
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "devDependencies": {
-        "browser-sync": "^2.29.3",
-        "concurrently": "^8.2.2",
-        "eslint": "^8.52.0",
-        "eslint-config-airbnb-base": "^15.0.0",
-        "eslint-config-prettier": "^9.0.0",
-        "eslint-plugin-import": "^2.29.0",
-        "prettier": "^3.0.3"
-    },
-    "dependencies": {
-        "sass": "^1.69.5"
-    }
+  "name": "hopverkefni-2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "browser-sync": "browser-sync start --server --files index.html styles.css ./src/",
+    "sass": "sass styles.scss styles.css",
+    "sass-watch": "sass --watch styles.scss styles.css",
+    "dev": "concurrently npm:sass-watch npm:browser-sync",
+    "prettier": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.29.3",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.52.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "prettier": "^3.0.3"
+  },
+  "dependencies": {
+    "sass": "^1.69.5"
+  }
 }

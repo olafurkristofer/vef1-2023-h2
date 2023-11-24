@@ -6,6 +6,7 @@
 
 html {
   box-sizing: border-box;
+  background-color: #f2f2f2;
 }
 
 *,
@@ -30,6 +31,7 @@ a {
   align-items: center;
   background-color: #526d82;
   margin-bottom: 1rem;
+  border-bottom: 2px solid #333333;
 }
 .header h1 {
   color: white;
@@ -72,11 +74,18 @@ a {
   border: 1px solid;
   border-radius: 4px;
 }
-.products .productBox .priceAndTitle {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 1rem;
+.products .productBox .productTitle {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-decoration: none;
+}
+.products .productBox .productTitle:hover {
+  color: darkblue;
+  text-decoration: underline;
+}
+.products .productBox .productCat {
+  font-size: 1em;
+  font-weight: bold;
 }
 .products .productBox img {
   margin-bottom: 1rem;
@@ -96,6 +105,58 @@ a {
   .products .productBox img {
     max-height: 350px;
   }
+}
+
+footer {
+  margin-top: 2rem;
+  background-color: #526d82;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+  border-top: 2px solid #333333;
+}
+footer a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.productIdDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  margin: 1rem;
+}
+.productIdDiv .productIdName {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+.productIdDiv .productIdPrice {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+.productIdDiv .productIdDesc {
+  margin-bottom: 20px;
+}
+.productIdDiv .productIdImage {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+.productIdDiv .productIdCat {
+  font-style: italic;
+  margin-bottom: 10px;
+}
+.productIdDiv .back {
+  margin-top: 20px;
+}
+.productIdDiv .back a {
+  text-decoration: none;
+  padding: 10px 20px;
+  border: 1px solid #333;
+  color: #333;
+  font-weight: bold;
 }
 
 /*# sourceMappingURL=styles.css.map */
